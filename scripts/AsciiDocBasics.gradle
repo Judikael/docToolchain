@@ -30,6 +30,8 @@ logger.info "docToolchain> docDir: ${docDir}"
 logger.info "docToolchain> mainConfigFile: ${mainConfigFile}"
 logger.info "docToolchain> projectDir: ${projectDir}"
 def configSlurper = new ConfigSlurper()
+// Add access to project ext properties in main configuration file, for subsitution
+configSlurper.setBinding(project.ext.getProperties())
 def configFile = new File(docDir, mainConfigFile)
 if (configFile.exists()) {
     //ok - nothing to do
@@ -127,10 +129,11 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
     // configure source and output files and folders
     outputDir = file(targetDir)
     sourceDir = file(srcDir)
-    attributes  (
- //           'pdf-stylesdir': "${pdfThemeDir}@",
- //           'pdf-style': "custom@",
- //           'pdf-fontsdir': "${pdfThemeDir}/fonts@",
+
+    def attributesMap = [
+//           'pdf-stylesdir': "${pdfThemeDir}@",
+//           'pdf-style': "custom@",
+//           'pdf-fontsdir': "${pdfThemeDir}/fonts@",
             'source-highlighter': 'highlightjs@',
             'imagesdir': 'images@',
             'toc': 'left@',
@@ -142,6 +145,24 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
             'targetDir'           : targetDir,
             'docDir'              : docDir,
             'projectRootDir'      : "${new File(docDir).canonicalPath}@",
+    ]
+    if (config?.readScmInfo.enable && scmref?.trim()) {
+        attributesMap["scmref"] = scmref
+    }
+    if (config?.readScmInfo.enable && scmdate?.trim()) {
+        attributesMap["scmdate"] = scmdate
+    }
+    if (config?.readScmInfo.enable && scmcommit?.trim()) {
+        attributesMap["scmcommit"] = scmcommit
+    }
+    if (config?.readScmInfo.enable && scmurl?.trim()) {
+        attributesMap["scmurl"] = scmurl
+    }
+    if (config?.docAttributes) {
+        attributesMap = attributesMap + config?.docAttributes
+    }
+    attributes  (
+        attributesMap
     )
     // Here we can add the code for extensions we write.
     extensions {

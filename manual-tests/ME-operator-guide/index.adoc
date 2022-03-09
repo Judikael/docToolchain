@@ -1,0 +1,48 @@
+:toc: left
+:toc-title: Table des matières
+:doctype: book
+
+ifndef::imagesdir[] 
+:imagesdir: assets
+endif::[]
+
+= Manuel d'Exploitation2
+
+[abstract]
+--
+*Version :* {scmref} {scmdate} #{scmcommit}
+
+Manuel d'Exploitation
+--
+
+.Test resdScmInfo.gradle
+[source,asciidoc,subs="attributes"]
+----
+
+revnumber = {revnumber}
+
+revdate = {revdate}
+
+javaVersion = {javaVersion}
+
+scmref = {scmref}
+
+scmdate = {scmdate}
+
+scmcommit = {scmcommit}
+
+scmurl = {scmurl}
+
+----
+
+
+:leveloffset: +1
+
+// <<<
+// include::chapitre-01.adoc[]
+
+:leveloffset: -1
+
+
+
+
