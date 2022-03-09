@@ -1,0 +1,73 @@
+/*
+ * This build file is part of the docToolchain
+ */
+buildscript {
+    repositories {
+        maven {
+            url mavenRepository
+        }
+    }
+}
+
+logger.info "readScmInfo> docDir: ${docDir}"
+logger.info "readScmInfo> mainConfigFile: ${mainConfigFile}"
+
+// configuration
+def config
+if (docDir.startsWith('.')) {
+    docDir = new File(projectDir, docDir).canonicalPath
+}
+def configSlurper = new ConfigSlurper()
+config = configSlurper.parse(new File(docDir, mainConfigFile).text)
+
+// default config
+def defaultConfig = [
+    enable: false,
+    scmrefCmd: "git symbolic-ref --short -q HEAD || git describe --tags --exact-match 2> /dev/null || git rev-parse --short HEAD",
+    scmdateCmd: "git log -1 --format='%at' | xargs -I{} date -d @{} '+%Y-%m-%d %H:%M:%S'",
+    scmcommitCmd: "git rev-parse --short HEAD",
+    scmurlCmd: "git config --get remote.origin.url",
+]
+// merge the default config
+config.readScmInfo = defaultConfig + config.readScmInfo
+
+List<String> confidentialIdentifiers = ["credential", "token", "secret"]
+config.flatten().each {key, value ->
+    String keyString = "${key}"
+    if (keyString.contains("readScmInfo")) {
+        if(confidentialIdentifiers.any {id -> keyString.toLowerCase().contains(id)}){
+            logger.info("Found config readScmInfo -> '${keyString}': '********'")
+        }else{
+            logger.info("Found config readScmInfo -> '${keyString}': '${value}'")
+        }
+    }
+}
+
+ext {
+    if (config?.readScmInfo.enable) {
+        logger.info("readScmInfo> Enable")
+        scmDir  = new File("${docDir}")
+        // Get SCM reference/branch/tag
+        scmref = ["sh", "-c", config.readScmInfo.scmrefCmd].execute(null, scmDir)
+        scmref.waitForOrKill(1000)
+        scmref = scmref.text.replaceAll("^[vV]", "").replaceAll("[\\n\\r]", "").trim()
+        logger.info("readScmInfo> scmref: ${scmref}")
+        // Default valur for Asciidoc scmdate
+        scmdate = ["sh", "-c", config.readScmInfo.scmdateCmd].execute(null, scmDir)
+        scmdate.waitForOrKill(1000)
+        scmdate = scmdate.text.replaceAll("[\\n\\r]", "").trim()
+        logger.info("readScmInfo> scmdate: ${scmdate}")
+        // Get SCM commit
+        scmcommit = ["sh", "-c", config.readScmInfo.scmcommitCmd].execute(null, scmDir)
+        scmcommit.waitForOrKill(1000)
+        scmcommit = scmcommit.text.replaceAll("[\\n\\r]", "").trim()
+        logger.info("readScmInfo> scmcommit: ${scmcommit}")
+        // Get SCM URL        
+        scmurl = ["sh", "-c", config.readScmInfo.scmurlCmd].execute(null, scmDir)
+        scmurl.waitForOrKill(1000)
+        scmurl = scmurl.text.replaceAll("[\\n\\r]", "").trim()
+        logger.info("readScmInfo> scmurl: ${scmurl}")
+    } else {
+        logger.info("readScmInfo> Disable")
+    }
+}

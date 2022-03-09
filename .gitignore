@@ -42,3 +42,9 @@ src/test/docs/excel/
 
 # MAC DS_Store file
 .DS_Store
+
+# Manual test
+manual-tests/.gradle
+manual-tests/build
+manual-tests/builder
+manual-tests/generate-docs.sh

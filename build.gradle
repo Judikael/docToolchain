@@ -55,6 +55,10 @@ see https://docs-as-co.de/getstarted/tutorial2 for more details.
     }
 }
 
+// Read git version and date befaore parse main config file 
+// in order to being able to resolve revnumber in main configuration file
+apply from: 'scripts/readScmInfo.gradle'
+
 //all available docToolchain modules
 //the first is mandatory
 apply from: 'scripts/AsciiDocBasics.gradle'
