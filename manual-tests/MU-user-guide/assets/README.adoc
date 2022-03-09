@@ -1,0 +1,14 @@
+Emplacement d'images et de binaires a embarquer.
+
+On peut rajouter des emplacements a embarquer en ajoutant des entrées dans *.config.groovy :
+
+[source,groovy]
+----
+//folders in which asciidoc will find images.
+//these will be copied as resources to ./images
+imageDirs = [
+    'assets',
+    '2021-08-18_demo/assets'
+    /** imageDirs **/
+]
+----
