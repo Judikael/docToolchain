@@ -686,7 +686,8 @@ def pushToConfluence = { pageTitle, pageBody, parentId, anchors, pageAnchors, ke
         def prefix = (config.confluence.extraPageContent?:'')
         localPage  = prefix+localPage
         localHash = MD5(localPage)
-        localPage += '<p style="display:none">hash: #'+localHash+'#</p>'
+        // Change <p style="display:none"> as it's forbidden by Confluence Server edition
+        localPage += '<ac:parameter ac:name="hash: #'+localHash+'#" />'
     }else{
         def default_toc = '<p><ac:structured-macro ac:name="toc"/></p>'
         def prefix = (config.confluence.tableOfContents?:default_toc)+(config.confluence.extraPageContent?:'')
@@ -694,7 +695,8 @@ def pushToConfluence = { pageTitle, pageBody, parentId, anchors, pageAnchors, ke
         def default_children = '<p><ac:structured-macro ac:name="children"><ac:parameter ac:name="sort">creation</ac:parameter></ac:structured-macro></p>'
         localPage += (config.confluence.tableOfChildren?:default_children)
         localHash = MD5(localPage)
-        localPage += '<p style="display:none">hash: #'+localHash+'#</p>'
+        // Change <p style="display:none"> as it's forbidden by Confluence Server edition
+        localPage += '<ac:parameter ac:name="hash: #'+localHash+'#" />'
     }
 
 
