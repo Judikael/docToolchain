@@ -511,6 +511,18 @@ def parseBody =  { body, anchors, pageAnchors ->
     body.select('div.arc42help').unwrap()
     body.select('div.title').wrap("<strong></strong>").before("<br />").wrap("<div></div>")
     body.select('div.listingblock').wrap("<p></p>").unwrap()
+
+    //special support of <details> html tag
+    body.select('details').each { detailElement ->
+        def detailTitle = detailElement.select('details > summary.title').text() // Only support raw text
+        detailElement.select('details > .content') // Wrap the content in an expand macro
+            .wrap('<ac:structured-macro ac:name="expand"></ac:structured-macro>')
+            .before('<ac:parameter ac:name="title">'+detailTitle+'</ac:parameter>')
+            .wrap('<ac:rich-text-body></ac:rich-text-body>')
+    }
+    body.select('details > summary.title').remove() // Delete the title as used in expand macro
+    body.select('details').unwrap()
+
     // see if we can find referenced images and fetch them
     new File("tmp/images/.").mkdirs()
     // find images, extract their URLs for later uploading (after we know the pageId) and replace them with this macro:
