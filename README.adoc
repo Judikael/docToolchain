@@ -1,6 +1,31 @@
 
 :imagesdir: images
 
+== Fork docToolchain
+
+=== Asciidoc Features added:
+
+* Add a read SCM functionality, read and set some variable from SCM like branch, tag, commit, date (`/scripts/AsciiDocBasics.gradle`, `/scripts/readScm.gradle`, `build.gradle`)
+* Update asciidoctor version and asciidoctor PDF version (`/scripts/AsciiDocBasics.gradle`)
+* Make PDF behavor the same concerning imagesDir folders (`/scripts/AsciiDocBasics.gradle`)
+* Add asciidoctorj-chart plugin (`/scripts/AsciiDocBasics.gradle`)
+
+=== Confluence feature added:
+
+* Change the page hash storage to be compatible with more confluence versions (`/scripts/asciidoc2confluence.groovy`)
++
+Many Confluence Server mode installation reject the attribute `style=` on `p` tag. So we change it to an always work method: use `ac:parameter` instead
+* Simply add the support of asciidoc collapsible (`/scripts/asciidoc2confluence.groovy`)
++
+[source,asciidoc]
+----
+.Click me
+[%collapsible]
+====
+Example block turns into collapsible summary/details with title.
+====
+----
+
 == docToolchain
 
 :url-ci-travis: https://app.travis-ci.com/github/docToolchain/docToolchain
