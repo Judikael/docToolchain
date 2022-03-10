@@ -12,7 +12,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
+        classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.6.1'
     }
 }
 import org.asciidoctor.gradle.AsciidoctorTask
@@ -101,12 +101,13 @@ ext {
 
 
 dependencies {
-    asciidoctor 'org.asciidoctor:asciidoctorj-pdf:1.5.3'
+    asciidoctor 'org.asciidoctor:asciidoctorj-pdf:1.6.2'
     asciidoctor 'org.asciidoctor:asciidoctorj-diagram:2.2.3'
+    asciidoctor 'org.asciidoctor:asciidoctorj-chart:1.0.0.alpha.1'
 }
 
 asciidoctorj {
-    version = '1.6.2'
+    version = '2.5.3'
 }
 
 //tag::AsciidoctorTask[]
@@ -178,7 +179,7 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
     // good to see what the build is doing...
     logDocuments = true
 
-    requires = ['asciidoctor-diagram']
+    requires = ['asciidoctor-diagram', 'asciidoctor-chart']
 //TODO: write docs
     if (config.rubyExtensions) {
         config.rubyExtensions.each { extension ->
@@ -258,6 +259,7 @@ task generatePDF (
     )
 
     attributes (
+        'imagesdir': file("${docDir}/${config.outputPath}/pdf/images").path, // Make generatePDF work the same way than generateHTML
         'data-uri': 'true',
         'plantUMLDir'         : file("${docDir}/${config.outputPath}/images/").path,
         'imagesoutdir'        : file("${docDir}/${config.outputPath}/images/").path
@@ -269,6 +271,15 @@ task generatePDF (
 //    onlyIf {
 //        sourceFilesPDF
 //    }
+
+    resources {
+        // Make generatePDF work the same way than generateHTML
+        config.imageDirs.each { imageDir ->
+            from(new File(file(srcDir),imageDir))
+            logger.info ('imageDir: '+imageDir)
+        }
+        into './images' // Relative to file("${docDir}/${config.outputPath}/pdf/").path
+    }
 
     sources {
         sourceFilesPDF.each {
