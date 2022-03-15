@@ -12,14 +12,6 @@ buildscript {
 logger.info "readScmInfo> docDir: ${docDir}"
 logger.info "readScmInfo> mainConfigFile: ${mainConfigFile}"
 
-// configuration
-def config
-if (docDir.startsWith('.')) {
-    docDir = new File(projectDir, docDir).canonicalPath
-}
-def configSlurper = new ConfigSlurper()
-config = configSlurper.parse(new File(docDir, mainConfigFile).text)
-
 // default config
 def defaultConfig = [
     enable: false,
@@ -28,23 +20,36 @@ def defaultConfig = [
     scmcommitCmd: "git rev-parse --short HEAD",
     scmurlCmd: "git config --get remote.origin.url",
 ]
-// merge the default config
-config.readScmInfo = defaultConfig + config.readScmInfo
 
+// read custum configuration
+def config = [:]
+try {    
+    if (docDir.startsWith('.')) {
+        docDir = new File(projectDir, docDir).canonicalPath
+    }
+    def configSlurper = new ConfigSlurper()
+    config = configSlurper.parse(new File(docDir, mainConfigFile).text)
+
+    // merge the default config
+    config['readScmInfo'] = defaultConfig + config.readScmInfo
+} catch (e) {
+    logger.error "readScmInfo> Error reading configuration file ${docDir}/${mainConfigFile}: ${e.message}"
+    config['readScmInfo'] = defaultConfig
+}
+
+// Print readScmInfo configuration
 List<String> confidentialIdentifiers = ["credential", "token", "secret"]
-config.flatten().each {key, value ->
+config?.readScmInfo?.each {key, value ->
     String keyString = "${key}"
-    if (keyString.contains("readScmInfo")) {
-        if(confidentialIdentifiers.any {id -> keyString.toLowerCase().contains(id)}){
-            logger.info("Found config readScmInfo -> '${keyString}': '********'")
-        }else{
-            logger.info("Found config readScmInfo -> '${keyString}': '${value}'")
-        }
+    if(confidentialIdentifiers.any {id -> keyString.toLowerCase().contains(id)}){
+        logger.info("Found config readScmInfo -> '${keyString}': '********'")
+    }else{
+        logger.info("Found config readScmInfo -> '${keyString}': '${value}'")
     }
 }
 
 ext {
-    if (config?.readScmInfo.enable) {
+    if (config?.readScmInfo?.enable) {
         logger.info("readScmInfo> Enable")
         scmDir  = new File("${docDir}")
         // Get SCM reference/branch/tag
