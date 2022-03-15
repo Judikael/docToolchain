@@ -139,16 +139,16 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
             'docDir'              : docDir,
             'projectRootDir'      : "${new File(docDir).canonicalPath}@",
     ]
-    if (config?.readScmInfo.enable && scmref?.trim()) {
+    if (config?.readScmInfo?.enable && scmref?.trim()) {
         attributesMap["scmref"] = scmref
     }
-    if (config?.readScmInfo.enable && scmdate?.trim()) {
+    if (config?.readScmInfo?.enable && scmdate?.trim()) {
         attributesMap["scmdate"] = scmdate
     }
-    if (config?.readScmInfo.enable && scmcommit?.trim()) {
+    if (config?.readScmInfo?.enable && scmcommit?.trim()) {
         attributesMap["scmcommit"] = scmcommit
     }
-    if (config?.readScmInfo.enable && scmurl?.trim()) {
+    if (config?.readScmInfo?.enable && scmurl?.trim()) {
         attributesMap["scmurl"] = scmurl
     }
     if (config?.docAttributes) {
