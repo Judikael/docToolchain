@@ -25,6 +25,7 @@ Many Confluence Server mode installation reject the attribute `style=` on `p` ta
 Example block turns into collapsible summary/details with title.
 ====
 ----
+* For Arc42 help detection if another child name .content is inside the main foldable .content (like have admonition inside) the child is also wrongly made collapsable (`/scripts/asciidoc2confluence.groovy`)
 
 == docToolchain
 
