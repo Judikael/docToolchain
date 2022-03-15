@@ -62,4 +62,5 @@ WORKDIR /project
 
 VOLUME /project
 
-ENTRYPOINT /bin/bash
+ENTRYPOINT ["doctoolchain"]
+CMD [".", "--help"]
