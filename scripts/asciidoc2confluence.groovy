@@ -502,7 +502,7 @@ def parseBody =  { body, anchors, pageAnchors ->
         }
     }
     //special for the arc42-template
-    body.select('div.arc42help').select('.content')
+    body.select('div.arc42help').select('.arc42help > .content')
             .wrap('<ac:structured-macro ac:name="expand"></ac:structured-macro>')
             .wrap('<ac:rich-text-body></ac:rich-text-body>')
             .wrap('<ac:structured-macro ac:name="info"></ac:structured-macro>')
