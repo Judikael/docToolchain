@@ -23,6 +23,18 @@ RUN gem install rdoc --no-document
 RUN gem install pygments.rb
 
 # Add pandoc
+# Reinstall any system packages required for runtime of pandoc.
+RUN apk --no-cache add \
+        gmp \
+        libffi \
+        lua5.3 \
+        lua5.3-lpeg
+COPY --from=pandoc/core:2.9 \
+    /usr/bin/pandoc \
+    /usr/bin/pandoc-citeproc \
+    /usr/bin/
+
+# Add pandoc
 # https://github.com/advancedtelematic/dockerfiles/blob/master/doctools/Dockerfile
 #RUN apk add --no-cache cmark --repository http://nl.alpinelinux.org/alpine/edge/testing && \
 #    apk add --no-cache --allow-untrusted pandoc --repository https://conoria.gitlab.io/alpine-pandoc/
@@ -46,13 +58,14 @@ RUN     cd docToolchain && \
         # remove .git folders
         rm -rf `find -type d -name .git` && \
         umask g+w && \
+        ./gradlew --write-verification-metadata sha256 help && \
         ./gradlew tasks && \
         ./gradlew dependencies && \
-        ./gradlew generatePDF && \
+        ./gradlew generateHTML generatePDF && \        
         chmod -R o=u $GRADLE_USER_HOME && \
         chmod -R g=u $GRADLE_USER_HOME && \
         rm -r $GRADLE_USER_HOME/daemon && \
-        chmod -R o=u $HOME
+        chmod -R o=u $HOME    
 
 ENV PATH="/home/dtcuser/docToolchain/bin:${PATH}"
 
