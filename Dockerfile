@@ -58,6 +58,7 @@ RUN     cd docToolchain && \
         # remove .git folders
         rm -rf `find -type d -name .git` && \
         umask g+w && \
+        # Preload dependencies in order to execute without download from internet
         ./gradlew --write-verification-metadata sha256 help && \
         rm -f gradle/verification-metadata.xml && \
         ./gradlew tasks && \
