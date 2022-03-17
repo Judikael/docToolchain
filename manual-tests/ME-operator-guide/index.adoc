@@ -6,7 +6,7 @@ ifndef::imagesdir[]
 :imagesdir: assets
 endif::[]
 
-= Manuel d'Exploitation2
+= Manuel d'Exploitation2 {scmref}
 
 [abstract]
 --

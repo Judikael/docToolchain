@@ -1,10 +1,10 @@
-outputPath = 'build/ME-operator-guide'
+outputPath = './build'
 
 // Path where the docToolchain will search for the input files.
 // This path is appended to the docDir property specified in gradle.properties
 // or in the command line, and therefore must be relative to it.
 
-inputPath = 'ME-operator-guide';
+inputPath = '.';
 pdfThemeDir = './docs/pdfTheme'
 
 inputFiles = [
@@ -17,7 +17,7 @@ inputFiles = [
 //folders in which asciidoc will find images.
 //these will be copied as resources to ./images
 imageDirs = [
-    'assets',
+    'images',
     /** imageDirs **/
 ]
 
