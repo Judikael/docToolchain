@@ -59,6 +59,7 @@ RUN     cd docToolchain && \
         rm -rf `find -type d -name .git` && \
         umask g+w && \
         ./gradlew --write-verification-metadata sha256 help && \
+        rm -f gradle/verification-metadata.xml && \
         ./gradlew tasks && \
         ./gradlew dependencies && \
         ./gradlew generateHTML generatePDF && \        
