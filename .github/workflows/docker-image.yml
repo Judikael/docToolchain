@@ -8,6 +8,8 @@ on:
   create:
     tags:
       - v*-shadoc*
+  workflow_dispatch:
+    branches: [ ng-shadoc , v*-shadoc* ]
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
