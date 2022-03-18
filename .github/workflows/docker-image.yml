@@ -5,7 +5,9 @@ on:
     branches: [ ng-shadoc ]
   pull_request:
     branches: [ ng-shadoc ]
-
+  create:
+    tags:
+      - v*-shadoc*
 jobs:
   push_to_registry:
     name: Push Docker image to Docker Hub
