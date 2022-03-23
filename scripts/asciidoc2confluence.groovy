@@ -897,7 +897,7 @@ config.confluence.input.each { input ->
         dom.select('div#preamble div.sectionbody').each { pageBody ->
             pageBody.select('div.sect2').unwrap()
             def preamble = [
-                title: confluencePreambleTitle ?: "arc42",
+                title: confluencePreambleTitle ?: dom.select('title')?.first()?.text() ?: dom.select('info')?.first()?.text() ?: dom.select('h1')?.first()?.text() ?: "arc42",
                 body: pageBody,
                 children: [],
                 parent: parentId
