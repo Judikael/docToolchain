@@ -838,6 +838,13 @@ if(config.confluence.inputHtmlFolder) {
     }
 }
 
+// If no entry in config.confluence.input array we try a default one
+if (!config.confluence?.input || config.confluence.input.isEmpty()) {
+    config.confluence?.input = [
+        [ file: "build/html5/index.html" ],
+    ]
+}
+
 config.confluence.input.each { input ->
     if(input.file) {
         input.file = "${docDir}/${input.file}"
