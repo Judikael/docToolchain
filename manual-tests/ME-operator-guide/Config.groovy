@@ -60,9 +60,9 @@ taskInputsFiles = []
 
 confluence = [
 
-    input: [
-        [ file: "build/html5/index.html" ],
-    ],
+    // input: [
+    //     [ file: "build/html5/index.html" ],
+    // ],
 
     // endpoint of the confluenceAPI (REST) to be used
     // to verify the endpoint, add user/current and pate it into your browser
