@@ -937,6 +937,8 @@ config.confluence.input.each { input ->
     //  added
         confluencePageSuffix = input.pageSuffix ?: config.confluence.pageSuffix
         confluencePreambleTitle = input.preambleTitle ?: config.confluence.preambleTitle
+    // Add auto detection of preambleTitle doctoolchain parameter from ascidoc    
+        confluencePreambleTitle = confluencePreambleTitle ?: dom.select('title')?.first()?.text() ?: dom.select('info')?.first()?.text() ?: dom.select('h1')?.first()?.text() ?: "arc42"
 
         def html = input.file ? new File(input.file).getText('utf-8') : new URL(input.url).getText()
         baseUrl = input.file ? new File(input.file) : new URL(input.url)

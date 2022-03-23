@@ -61,7 +61,7 @@ taskInputsFiles = []
 confluence = [
 
     input: [
-            [ file: "build/ME-operator-guide/html5/index.html" ],
+        [ file: "build/html5/index.html" ],
     ],
 
     // endpoint of the confluenceAPI (REST) to be used
@@ -77,7 +77,7 @@ confluence = [
     // ancestorName: 'Test',
 
     // the title of the page containing the preamble (everything the first second level heading). Default is 'arc42'
-    preambleTitle: "${scmref} - Manuel d'Exploitation",
+    // preambleTitle: "${scmref} - Manuel d'Exploitation",
 
     // variable to determine whether ".sect2" sections shall be split from the current page into subpages
     createSubpages: false,
@@ -98,7 +98,7 @@ confluence = [
     enableAttachments: true,
 
     // default attachmentPrefix = attachment - All files to attach will require to be linked inside the document.
-    attachmentPrefix: "medtc-${scmref}-",
+    attachmentPrefix: 'images',
 ]
 //end::confluenceConfig[]
 
