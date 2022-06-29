@@ -6,14 +6,16 @@ ifndef::imagesdir[]
 :imagesdir: assets
 endif::[]
 
-= {scmref} - Manuel d'Exploitation3 {scmref}
+= {scmref} - Document 01 {scmref}
 
 [abstract]
 --
 *Version :* {scmref} {scmdate} #{scmcommit}
-
-Manuel d'Exploitation
 --
+
+== Titre A
+
+Contenu A
 
 .Test resdScmInfo.gradle
 [source,asciidoc,subs="attributes"]
@@ -35,6 +37,25 @@ scmurl = {scmurl}
 
 ----
 
+=== Titre A1
+
+Contenu A1
+
+=== Titre A2
+
+Contenu A2
+
+== Titre B
+
+Contenu B
+
+=== Titre B1
+
+Contenu B1
+
+=== Titre B2
+
+Contenu B2
 
 :leveloffset: +1
 

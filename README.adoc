@@ -28,6 +28,17 @@ Example block turns into collapsible summary/details with title.
 * For Arc42 help detection if another child name .content is inside the main foldable .content (like have admonition inside) the child is also wrongly made collapsable (`/scripts/asciidoc2confluence.groovy`)
 * Add auto detection of 'preambleTitle' : try <title> (html5) then <info> (docbook) then first <h1> (html5 with showtitle disable) then 'arc42' (`/scripts/asciidoc2confluence.groovy`)
 * Add default value for confluence.input parameter : "build/html5/index.html" (`/scripts/asciidoc2confluence.groovy`)
+* Add configuration parameter `createSeveralPages` default to `true` in order to not change the original doctoolchain behavor. (`/scripts/asciidoc2confluence.groovy`)
++
+If set to false, only one page will be created and this page will get all the content.
++
+[source,groovy]
+----
+confluence = [
+    // Create only one page
+    createSeveralPages: false
+]
+----
 
 == docToolchain
 

@@ -1,0 +1,1 @@
+./gradlew -PdocDir=manual-tests/document-01 generateHTML $@ -PmainConfigFile=Config.groovy -PconfluenceUser=$confluenceUser -PconfluencePass=$confluencePass

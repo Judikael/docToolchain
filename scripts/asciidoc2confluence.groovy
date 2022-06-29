@@ -65,6 +65,7 @@ def allPages
 // configuration
 
 def confluenceSpaceKey
+def confluenceCreateSeveralPages
 def confluenceCreateSubpages
 def confluenceAllInOnePage
 def confluencePagePrefix

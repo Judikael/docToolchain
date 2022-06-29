@@ -143,6 +143,10 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
             'docDir'              : docDir,
             'projectRootDir'      : "${new File(docDir).canonicalPath}@",
     ]
+    // Note: @ symbol at the end of an attribute value defined in the playbook, 
+    // it lowers the precedence of the attribute assignment so the page may override the value. 
+    // The @ modifier is then stripped from the value. We refer to this technique as soft setting an attribute.
+    // https://docs.asciidoctor.org/asciidoc/latest/attributes/assignment-precedence/
     if (config?.readScmInfo?.enable && scmref?.trim()) {
         attributesMap["scmref@"] = "$scmref"
     }
@@ -153,7 +157,7 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
         attributesMap["scmcommit@"] = "$scmcommit"
     }
     if (config?.readScmInfo?.enable && scmurl?.trim()) {
-        attributesMap["scmurl@"] = "$scmurls"
+        attributesMap["scmurl@"] = "$scmurl"
     }
     if (config?.docAttributes) {
         attributesMap = attributesMap + config?.docAttributes
