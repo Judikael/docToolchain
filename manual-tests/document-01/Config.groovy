@@ -79,6 +79,8 @@ confluence = [
     // the title of the page containing the preamble (everything the first second level heading). Default is 'arc42'
     // preambleTitle: "${scmref} - Manuel d'Exploitation",
 
+    // Create only one page
+    createSeveralPages: false,
     // variable to determine whether ".sect2" sections shall be split from the current page into subpages
     createSubpages: false,
 
@@ -87,7 +89,7 @@ confluence = [
     // pages with the same title - a different pagePrefix will make them unique
     pagePrefix: '',
 
-    pageSuffix: " [medtc-${scmref}]",
+    pageSuffix: " [doc01-${scmref}]",
 
     // HTML Content that will be included with every page published
     // directly after the TOC. If left empty no additional content will be
@@ -103,13 +105,13 @@ confluence = [
 //end::confluenceConfig[]
 
 // Configuration for readGitInfo.gradle
-readScmInfo = [:]
-readScmInfo.with {
-    enable = true
-}
+readScmInfo = [
+    enable: true
+]
 
 // Additionnal asciidoc attributes
 docAttributes = [
     revnumber: "${scmref}",
     revdate: "${scmdate}",
+    revremark: "${scmcommit}",
 ]

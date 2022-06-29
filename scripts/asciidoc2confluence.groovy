@@ -65,6 +65,7 @@ def allPages
 // configuration
 
 def confluenceSpaceKey
+def confluenceCreateSeveralPages
 def confluenceCreateSubpages
 def confluencePagePrefix
 def baseApiPath = new URI(config.confluence.api).path
@@ -900,8 +901,14 @@ config.confluence.input.each { input ->
             }
             println "Keywords:" + keywords
         }
+
+        // If confluenceCreateSeveralPages is disable we create only one page and so take all content
+        // default value confluenceCreateSeveralPages for is true in order to not change the original doctoolchain behavor
+        confluenceCreateSeveralPages = (input.createSeveralPages != null) ? input.createSeveralPages : (config.confluence?.createSeveralPages != null ? config.confluence.createSeveralPages : true)
+        def domSelectPage = confluenceCreateSeveralPages == true ? 'div#preamble div.sectionbody' : 'div#content'
+
         // let's try to select the "first page" and push it to confluence
-        dom.select('div#preamble div.sectionbody').each { pageBody ->
+        dom.select(domSelectPage).each { pageBody ->
             pageBody.select('div.sect2').unwrap()
             def preamble = [
                 title: confluencePreambleTitle ?: dom.select('title')?.first()?.text() ?: dom.select('info')?.first()?.text() ?: dom.select('h1')?.first()?.text() ?: "arc42",
@@ -914,40 +921,43 @@ config.confluence.input.each { input ->
             parentId = null
             anchors.putAll(parseAnchors(preamble))
         }
-        // <div class="sect1"> are the main headings
-        // let's extract these
-        dom.select('div.sect1').each { sect1 ->
-            Elements pageBody = sect1.select('div.sectionbody')
-            def currentPage = [
-                title: sect1.select('h2').text(),
-                body: pageBody,
-                children: [],
-                parent: parentId
-            ]
-            pageAnchors.putAll(recordPageAnchor(sect1.select('h2')))
 
-            if (confluenceCreateSubpages) {
-                pageBody.select('div.sect2').each { sect2 ->
-                    def title = sect2.select('h3').text()
-                    pageAnchors.putAll(recordPageAnchor(sect2.select('h3')))
-                    sect2.select('h3').remove()
-                    def body = Jsoup.parse(sect2.toString(),'utf-8', Parser.xmlParser())
-                    body.outputSettings(new Document.OutputSettings().prettyPrint(false))
-                    def subPage = [
-                        title: title,
-                        body: body
-                    ]
-                    currentPage.children << subPage
-                    promoteHeaders sect2, 4, 3
-                    anchors.putAll(parseAnchors(subPage))
+        if (confluenceCreateSeveralPages == true) {
+            // <div class="sect1"> are the main headings
+            // let's extract these
+            dom.select('div.sect1').each { sect1 ->
+                Elements pageBody = sect1.select('div.sectionbody')
+                def currentPage = [
+                    title: sect1.select('h2').text(),
+                    body: pageBody,
+                    children: [],
+                    parent: parentId
+                ]
+                pageAnchors.putAll(recordPageAnchor(sect1.select('h2')))
+
+                if (confluenceCreateSubpages) {
+                    pageBody.select('div.sect2').each { sect2 ->
+                        def title = sect2.select('h3').text()
+                        pageAnchors.putAll(recordPageAnchor(sect2.select('h3')))
+                        sect2.select('h3').remove()
+                        def body = Jsoup.parse(sect2.toString(),'utf-8', Parser.xmlParser())
+                        body.outputSettings(new Document.OutputSettings().prettyPrint(false))
+                        def subPage = [
+                            title: title,
+                            body: body
+                        ]
+                        currentPage.children << subPage
+                        promoteHeaders sect2, 4, 3
+                        anchors.putAll(parseAnchors(subPage))
+                    }
+                    pageBody.select('div.sect2').remove()
+                } else {
+                    pageBody.select('div.sect2').unwrap()
+                    promoteHeaders sect1, 3, 2
                 }
-                pageBody.select('div.sect2').remove()
-            } else {
-                pageBody.select('div.sect2').unwrap()
-                promoteHeaders sect1, 3, 2
+                sections << currentPage
+                anchors.putAll(parseAnchors(currentPage))
             }
-            sections << currentPage
-            anchors.putAll(parseAnchors(currentPage))
         }
 
         pushPages pages, anchors, pageAnchors, keywords
