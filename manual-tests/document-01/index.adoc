@@ -37,6 +37,16 @@ scmurl = {scmurl}
 
 ----
 
+
+Test raw html
+
+++++
+<ac:structured-macro 
+    ac:schema-version="1"
+    ac:name="scroll-version-navigation"      
+    data-layout="default" />
+++++
+
 === Titre A1
 
 Contenu A1
