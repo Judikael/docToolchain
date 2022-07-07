@@ -155,6 +155,13 @@ tasks.withType(org.asciidoctor.gradle.AsciidoctorTask) { docTask ->
     if (config?.readScmInfo?.enable && scmurl?.trim()) {
         attributesMap["scmurl@"] = "$scmurl"
     }
+    // As Confluence is not an Asciidoc backend, we add a simple flag to be able to know if the target is a confluence publication
+    // Test if a confluence publication is asked
+    def isConfluence = 'publishToConfluence' in project.gradle.startParameter.taskNames
+    if (isConfluence) {
+        attributesMap["publish-confluence@"] = "" // We mimic asciidoc attribute backend-*
+    }
+
     if (config?.docAttributes) {
         attributesMap = attributesMap + config?.docAttributes
     }

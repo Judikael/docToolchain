@@ -1,7 +1,7 @@
 
 :imagesdir: images
 
-== Fork docToolchain
+== What this fork add to ocToolchain
 
 === Asciidoc Features added:
 
@@ -39,7 +39,14 @@ confluence = [
     createSeveralPages: false
 ]
 ----
-
+* Add a convenience asciidoc attribute `publish-confluence` for checking if a publication to confluence have been asked
++
+[source,asciidoc]
+----
+ifdef::publish-confluence[]
+This content is only for confluence.
+endif::[]
+----
 == docToolchain
 
 :url-ci-travis: https://app.travis-ci.com/github/docToolchain/docToolchain

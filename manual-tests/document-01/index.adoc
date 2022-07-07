@@ -8,14 +8,26 @@ endif::[]
 
 = {scmref} - Document 01 {scmref}
 
+Contain under main title
+
 [abstract]
 --
-*Version :* {scmref} {scmdate} #{scmcommit}
+*Version:* {scmref} {scmdate} #{scmcommit}
+
+*publish-confluence:* {publish-confluence}
+
+*backend-html5:* {backend-html5}
+
+*backend-pdf:* {backend-pdf}
 --
 
-== Titre A
+ifdef::publish-confluence[]
+This content is only for confluence.
+endif::[]
 
-Contenu A
+== Title A
+
+Contain A
 
 .Test resdScmInfo.gradle
 [source,asciidoc,subs="attributes"]
@@ -47,30 +59,38 @@ Test raw html
     data-layout="default" />
 ++++
 
-=== Titre A1
+=== Title A1
 
-Contenu A1
+Contain A1
 
-=== Titre A2
+=== Title A2
 
-Contenu A2
+Contain A2
 
-== Titre B
+== Title B
 
-Contenu B
+Contain B
 
-=== Titre B1
+=== Title B1
 
-Contenu B1
+Contain B1
 
-=== Titre B2
+=== Title B2
 
-Contenu B2
+Contain B2
+
+= Test several title level 1 (book mode)
+
+Contain Another Title 1
+
+== Title A Another Title 1
+
+Contain A Another Title 1
 
 :leveloffset: +1
 
 // <<<
-// include::chapitre-01.adoc[]
+// include::chapiter-01.adoc[]
 
 :leveloffset: -1
 
