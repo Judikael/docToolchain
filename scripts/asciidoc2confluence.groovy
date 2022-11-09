@@ -676,6 +676,15 @@ def parseBody =  { body, anchors, pageAnchors ->
             .replaceAll(CDATA_PLACEHOLDER_START,'<![CDATA[')
             .replaceAll(CDATA_PLACEHOLDER_END,']]>')
 
+    if (config.confluence.shiftConfluenceSection) {
+        // Confluence manage the first section level (== Section 1) as multiple <H1> (confluence document title (= Doc Title) are not an <Hx>)
+        // But Ascidoc HTML have the first section level as <H2> (<H1> is for the document title)
+        // So we reduce section level of H2 H3 H4 H5 H6 by 1
+        for(int i = 2;i<=6;i++) {
+            pageString = pageString.replaceAll("(<\\s*\\/?h)$i", "\$1${i-1}") // Searh <h$i and </h$i dans replace by <h$i-1 and </h$i-1
+        }        
+    }
+
     return pageString
 }
 
