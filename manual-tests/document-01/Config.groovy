@@ -77,10 +77,11 @@ confluence = [
     // ancestorName: 'Test',
 
     // the title of the page containing the preamble (everything the first second level heading). Default is 'arc42'
+    // Use the asciidoc title if not set
     // preambleTitle: "${scmref} - Manuel d'Exploitation",
 
     // Create only one page
-    createSeveralPages: false,
+    allInOnePage: true,
     // variable to determine whether ".sect2" sections shall be split from the current page into subpages
     createSubpages: false,
 
