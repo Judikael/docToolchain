@@ -36,6 +36,16 @@ ifdef::publish-confluence[]
 This content is only for confluence.
 endif::[]
 ----
+* Add the posibility to shift confluence sections up by one (as confluence title level 2 is representated by <h1> instead of <h2> for a backend-html).
++
+[source,groovy]
+----
+confluence = [
+    // Create only one page
+    shiftConfluenceSection: true,    
+]
+----
+
 == docToolchain
 
 :url-ci-travis: https://app.travis-ci.com/github/docToolchain/docToolchain
