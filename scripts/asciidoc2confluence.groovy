@@ -65,7 +65,6 @@ def allPages
 // configuration
 
 def confluenceSpaceKey
-def confluenceCreateSeveralPages
 def confluenceCreateSubpages
 def confluenceAllInOnePage
 def confluencePagePrefix
@@ -363,8 +362,9 @@ def retrieveFullPage = { RESTClient api, Map headers, String id ->
 }
 
 //if a parent has been specified, check whether a page has the same parent.
-boolean hasRequestedParent(Map existingPage, String requestedParentId) {
-    if (requestedParentId) {
+boolean hasRequestedParent(Map existingPage, String requestedParentId) {    
+    // Correct the condition as requestedParentId can be a String casted from a number (null => "null")
+    if (requestedParentId && requestedParentId != "null") { 
         existingPage.parentId == requestedParentId
     } else {
         true
@@ -575,7 +575,7 @@ def parseBody =  { body, anchors, pageAnchors ->
         }
     }
     //special for the arc42-template
-    body.select('div.arc42help').select('.arc42help > .content')
+    body.select('div.arc42help').select('.arc42help > .content') // if another child name .content is inside the main foldable .content (like have admonition inside) the child is also wrongly made collapsable
             .wrap('<ac:structured-macro ac:name="expand"></ac:structured-macro>')
             .wrap('<ac:rich-text-body></ac:rich-text-body>')
             .wrap('<ac:structured-macro ac:name="info"></ac:structured-macro>')
@@ -726,7 +726,8 @@ def pushToConfluence = { pageTitle, pageBody, parentId, anchors, pageAnchors, ke
                     ]
             ]
     ]
-    if (parentId) {
+    // Correct the condition as parentId is a String casted from a number (null => "null")
+    if (parentId && parentId != "null") {
         request.ancestors = [
                 [ type: 'page', id: parentId]
         ]
@@ -945,8 +946,6 @@ config.confluence.input.each { input ->
     //  added
         confluencePageSuffix = input.pageSuffix ?: config.confluence.pageSuffix
         confluencePreambleTitle = input.preambleTitle ?: config.confluence.preambleTitle
-    // Add auto detection of preambleTitle doctoolchain parameter from ascidoc    
-        confluencePreambleTitle = confluencePreambleTitle ?: dom.select('title')?.first()?.text() ?: dom.select('info')?.first()?.text() ?: dom.select('h1')?.first()?.text() ?: "arc42"
 
         def html = input.file ? new File(input.file).getText('utf-8') : new URL(input.url).getText()
         baseUrl = input.file ? new File(input.file) : new URL(input.url)
@@ -954,6 +953,9 @@ config.confluence.input.each { input ->
         dom.outputSettings().prettyPrint(false);//makes html() preserve linebreaks and spacing
         dom.outputSettings().escapeMode(org.jsoup.nodes.Entities.EscapeMode.xhtml); //This will ensure xhtml validity regarding entities
         dom.outputSettings().charset("UTF-8"); //does no harm :-)
+
+    //  Add auto detection of preambleTitle doctoolchain parameter from ascidoc    
+        confluencePreambleTitle = confluencePreambleTitle ?: dom.select('title')?.first()?.text() ?: dom.select('info')?.first()?.text() ?: dom.select('h1')?.first()?.text() ?: "arc42"
 
         // if ancestorName is defined try to find machingAncestorId in confluence
         def retrievedAncestorId

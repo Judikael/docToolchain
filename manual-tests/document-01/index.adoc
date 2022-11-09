@@ -21,6 +21,10 @@ Contain under main title
 *backend-pdf:* {backend-pdf}
 --
 
+ifdef::backend-html5[]
+/!\ This content is only for html5 and confluence (because publishToConfluence use backend-html5).
+endif::[]
+
 ifdef::publish-confluence[]
 This content is only for confluence.
 endif::[]
@@ -49,9 +53,27 @@ scmurl = {scmurl}
 
 ----
 
+.Test collapsable
+[%collapsible]
+====
+Example block turns into collapsible summary/details with title. 
 
-Test raw html
+WARNING: Wolpertingers are known to nest in server racks.
+Enter at your own risk.
 
+====
+
+[TIP]
+.Feeding the Werewolves
+====
+While werewolves are hardy community members, keep in mind the following dietary concerns:
+
+. They are allergic to cinnamon.
+. More than two glasses of orange juice in 24 hours makes them howl in harmony with alarms and sirens.
+. Celery makes them sad.
+====
+
+.Test raw html
 ++++
 <ac:structured-macro 
     ac:schema-version="1"
@@ -79,13 +101,13 @@ Contain B1
 
 Contain B2
 
-= Test several title level 1 (book mode)
+= Test several root title level bis (book mode)
 
-Contain Another Title 1
+Contain Test several root title level bis
 
-== Title A Another Title 1
+== Test several root title level bis with subtitle
 
-Contain A Another Title 1
+Contain Test several root title level bis with subtitle
 
 :leveloffset: +1
 
