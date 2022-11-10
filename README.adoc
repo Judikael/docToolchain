@@ -36,12 +36,13 @@ ifdef::publish-confluence[]
 This content is only for confluence.
 endif::[]
 ----
-* Add the posibility to shift confluence sections up by one (as confluence title level 2 is representated by <h1> instead of <h2> for a backend-html).
+* Add the posibility to shift confluence sections up by one. Confluence section level 1 is representated by <h1> instead of <h2> for a backend-html (as <h1> is the document title). (`/scripts/asciidoc2confluence.groovy`)
 +
 [source,groovy]
 ----
 confluence = [
-    // Create only one page
+    // Shift section level up by one for match confluence expectation
+    // (level 1 is <h1>, level 2 is <h2>)
     shiftConfluenceSection: true,    
 ]
 ----
