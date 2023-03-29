@@ -1071,7 +1071,7 @@ config.confluence.input.each { input ->
         confluenceSpaceKey = input.spaceKey ?: config.confluence.spaceKey
         confluenceCreateSubpages = (input.createSubpages != null) ? input.createSubpages : config.confluence.createSubpages
         confluenceAllInOnePage = (input.allInOnePage != null) ? input.allInOnePage : config.confluence.allInOnePage
-        if (!(confluenceCreateSubpages instanceof ConfigObject && confluenceAllInOnePage instanceof ConfigObject)) {
+        if ((config.confluence.createSubpages != null && !(confluenceCreateSubpages instanceof ConfigObject)) || (config.confluence.allInOnePage != null && !(confluenceAllInOnePage instanceof ConfigObject))) {
             println "ERROR:"
             println "Deprecated configuration, migrate as follows:"
             println "allInOnePage = true -> subpagesForSections = 0"
@@ -1080,7 +1080,7 @@ config.confluence.input.each { input ->
             throw new RuntimeException("config problem")
         }
         confluenceSubpagesForSections = (input.subpagesForSections != null) ? input.subpagesForSections : config.confluence.subpagesForSections
-        if (confluenceSubpagesForSections instanceof ConfigObject) {
+        if (config.confluence.subpagesForSections == null || confluenceSubpagesForSections instanceof ConfigObject) {
             confluenceSubpagesForSections = 1
         }
     //  hard to read in case of using :sectnums: -> so we add a suffix
@@ -1088,7 +1088,7 @@ config.confluence.input.each { input ->
     //  added
         confluencePageSuffix = input.pageSuffix ?: config.confluence.pageSuffix
         confluencePreambleTitle = input.preambleTitle ?: config.confluence.preambleTitle
-        if (!(confluencePreambleTitle instanceof ConfigObject)) {
+        if (config.confluence.preambleTitle != null && !(confluencePreambleTitle instanceof ConfigObject)) {
             println "ERROR:"
             println "Deprecated configuration, use first level heading in document instead of preambleTitle configuration"
             throw new RuntimeException("config problem")
