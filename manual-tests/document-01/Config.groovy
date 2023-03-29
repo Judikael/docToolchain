@@ -80,10 +80,8 @@ confluence = [
     // Use the asciidoc title if not set
     // preambleTitle: "${scmref} - Manuel d'Exploitation",
 
-    // Create only one page
-    allInOnePage: true,
-    // variable to determine whether ".sect2" sections shall be split from the current page into subpages
-    createSubpages: false,
+    // variable to determine how many layers of sub pages should be created
+    subpagesForSections: 0,
 
     // the pagePrefix will be a prefix for each page title
     // use this if you only have access to one confluence space but need to store several
